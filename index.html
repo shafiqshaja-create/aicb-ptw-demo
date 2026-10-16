@@ -296,6 +296,7 @@ button{
 }
 .toast{
   position:fixed;
+  left:18px;
   right:18px;
   bottom:18px;
   background:#111827;
@@ -838,9 +839,10 @@ setDates();
 function toggleHighRisk(){
   highRiskActive=["cutting","grinding","hotwork"].some(n=>radio(n)==="Yes");
   document.getElementById("highRiskSection").classList.toggle("hidden",!highRiskActive);
-  if(radio("hotwork")==="Yes") highRiskActivity.value="Hot Work";
-  else if(radio("grinding")==="Yes") highRiskActivity.value="Flame Cutting / Welding / Grinding";
-  else if(radio("cutting")==="Yes") highRiskActivity.value="Cutting Work";
+  const activity=document.getElementById("highRiskActivity");
+  if(radio("hotwork")==="Yes") activity.value="Hot Work";
+  else if(radio("grinding")==="Yes") activity.value="Flame Cutting / Welding / Grinding";
+  else if(radio("cutting")==="Yes") activity.value="Cutting Work";
 }
 
 function update(){
@@ -916,12 +918,16 @@ function esc(v){
 
 function buildReview(){
   const review=document.getElementById("review");
+  const v=id=>{
+    const el=document.getElementById(id);
+    return el ? el.value : "";
+  };
   review.innerHTML=`
     <div class="summary-block">
       <h4>Part I: Particular of Applicant</h4>
-      <strong>${esc(companyName.value)}</strong><br>
-      ${esc(applicantName.value)}<br>
-      ${esc(mobilePhone.value)} • ${esc(email.value)}
+      <strong>${esc(v("companyName"))}</strong><br>
+      ${esc(v("applicantName"))}<br>
+      ${esc(v("mobilePhone"))} • ${esc(v("email"))}
     </div>
     <div class="summary-block">
       <h4>Part II: Nature of Application</h4>
@@ -929,32 +935,32 @@ function buildReview(){
       <strong>Cutting:</strong> ${esc(radio("cutting"))} &nbsp; 
       <strong>Grinding:</strong> ${esc(radio("grinding"))} &nbsp;
       <strong>Hot Work:</strong> ${esc(radio("hotwork"))}<br><br>
-      ${esc(workDescription.value)}<br><br>
-      <strong>Period:</strong> ${esc(startDate.value)} to ${esc(endDate.value)}<br>
-      <strong>Hours:</strong> ${esc(startTime.value)} to ${esc(endTime.value)}
+      ${esc(v("workDescription"))}<br><br>
+      <strong>Period:</strong> ${esc(v("startDate"))} to ${esc(v("endDate"))}<br>
+      <strong>Hours:</strong> ${esc(v("startTime"))} to ${esc(v("endTime"))}
     </div>
     ${highRiskActive ? `
     <div class="summary-section high-risk-summary">
       <h4>High-Risk PTW Addendum</h4>
-      <strong>Activity:</strong> ${esc(highRiskActivity.value)}<br>
-      <strong>Location:</strong> ${esc(highRiskLocation.value)}<br>
-      <strong>Details:</strong> ${esc(highRiskDetails.value)}<br>
-      <strong>Fire Watch:</strong> ${esc(fireWatchName.value)} • ${esc(fireWatchContact.value)}<br>
-      <strong>Fire Extinguisher:</strong> ${esc(extinguisherConfirmed.value)}<br>
-      <strong>Fire Alarm Isolation:</strong> ${esc(fireAlarmIsolation.value)}<br>
+      <strong>Activity:</strong> ${esc(v("highRiskActivity"))}<br>
+      <strong>Location:</strong> ${esc(v("highRiskLocation"))}<br>
+      <strong>Details:</strong> ${esc(v("highRiskDetails"))}<br>
+      <strong>Fire Watch:</strong> ${esc(v("fireWatchName"))} • ${esc(v("fireWatchContact"))}<br>
+      <strong>Fire Extinguisher:</strong> ${esc(v("extinguisherConfirmed"))}<br>
+      <strong>Fire Alarm Isolation:</strong> ${esc(v("fireAlarmIsolation"))}<br>
       <strong>Precautions:</strong> ${esc(checked("precaution"))}<br>
       <strong>PPE:</strong> ${esc(checked("ppe"))}<br>
       <strong>Approval Route:</strong> Project Manager → BMH → Engineering → Security
     </div>` : ""}
     <div class="summary-block">
       <h4>Part III: Particular of Contractor(s)</h4>
-      ${esc(contractorCompany.value)}<br>
-      Supervisor: ${esc(siteSupervisor.value)} • ${esc(supervisorMobile.value)}<br>
-      Workers: ${esc(workerCount.value)}
+      ${esc(v("contractorCompany"))}<br>
+      Supervisor: ${esc(v("siteSupervisor"))} • ${esc(v("supervisorMobile"))}<br>
+      Workers: ${esc(v("workerCount"))}
     </div>
     <div class="summary-block">
       <h4>Letter of Undertaking</h4>
-      Accepted by ${esc(louName.value)}, ${esc(louDesignation.value)} on ${esc(louDate.value)}.
+      Accepted by ${esc(v("louName"))}, ${esc(v("louDesignation"))} on ${esc(v("louDate"))}.
     </div>`;
 }
 
@@ -998,3 +1004,6 @@ function showToast(msg){
 
 toggleHighRisk();
 update();
+</script>
+</body>
+</html>
