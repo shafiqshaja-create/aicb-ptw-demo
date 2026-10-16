@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AICB QR PTW – Integrated High-Risk Permit Demo</title>
+<style>
+:root{
+  --navy:#133b63;
+  --blue:#1f5f99;
+  --light:#f3f6f9;
+  --line:#cbd5df;
+  --text:#202733;
+  --muted:#667085;
+  --ok:#16794a;
+  --warn:#9a6700;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#e9eef4;
+  color:var(--text);
+}
+.header{
+  background:white;
+  border-bottom:1px solid var(--line);
+  padding:14px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.logo-box{
+  width:56px;height:56px;
+  display:grid;place-items:center;
+  background:var(--navy);
+  color:white;
+  font-weight:bold;
+  border-radius:6px;
+  font-size:12px;
+  text-align:center;
+}
+.brand h1{font-size:20px;margin:0;color:var(--navy)}
+.brand p{font-size:12px;margin:3px 0 0;color:var(--muted)}
+.badge{
+  background:#e8f1f8;
+  color:var(--navy);
+  padding:7px 11px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+}
+.shell{
+  max-width:1180px;
+  margin:22px auto;
+  padding:0 15px 35px;
+}
+.notice{
+  background:#fff;
+  border-left:5px solid var(--blue);
+  padding:14px 16px;
+  border-radius:8px;
+  box-shadow:0 3px 12px rgba(16,24,40,.06);
+  margin-bottom:18px;
+  font-size:14px;
+}
+.progress{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-bottom:16px;
+}
+.progress-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:13px;
+  margin-bottom:8px;
+}
+.bar{
+  height:8px;
+  background:#e5ebf1;
+  border-radius:999px;
+  overflow:hidden;
+}
+.bar span{
+  display:block;
+  height:100%;
+  background:var(--blue);
+  width:20%;
+  transition:.25s;
+}
+.paper{
+  background:white;
+  border:1px solid #aeb8c4;
+  border-radius:4px;
+  box-shadow:0 5px 18px rgba(16,24,40,.08);
+  padding:24px;
+}
+.doc-title{
+  text-align:center;
+  margin-bottom:18px;
+}
+.doc-title h2{
+  margin:0;
+  font-size:22px;
+  color:#111;
+}
+.doc-title .ref{
+  margin-top:11px;
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  align-items:center;
+  font-weight:bold;
+}
+.doc-title input{
+  width:220px;
+}
+.section-title{
+  background:#d2d2d2;
+  border:1px solid #444;
+  text-align:center;
+  font-weight:bold;
+  padding:7px;
+  margin:18px 0 0;
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  border-left:1px solid #555;
+  border-top:1px solid #555;
+}
+.cell{
+  border-right:1px solid #555;
+  border-bottom:1px solid #555;
+  padding:9px;
+  min-height:74px;
+}
+.cell.span2{grid-column:span 2}
+.cell.span3{grid-column:span 3}
+label{
+  display:block;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+input,select,textarea{
+  width:100%;
+  border:1px solid #aab5c1;
+  border-radius:5px;
+  padding:9px;
+  font:inherit;
+  background:white;
+}
+textarea{min-height:95px;resize:vertical}
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(31,95,153,.12);
+}
+.work-types{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+}
+.choice{
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:9px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:13px;
+  background:#fafbfd;
+}
+.choice input{width:auto}
+.yes-no{
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  gap:10px;
+  align-items:center;
+  padding:7px 0;
+  border-bottom:1px dashed #d5dce4;
+}
+.yes-no:last-child{border-bottom:none}
+.yes-no label{margin:0;font-weight:normal;font-size:13px}
+.schedule{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+.worker-table{
+  width:100%;
+  border-collapse:collapse;
+}
+.worker-table th,.worker-table td{
+  border:1px solid #666;
+  padding:7px;
+  font-size:12px;
+}
+.worker-table th{background:#f0f0f0}
+.worker-table input{padding:7px}
+.signature-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.note-box{
+  margin-top:14px;
+  padding:12px;
+  border:1px solid #b7c2ce;
+  background:#f8fafc;
+  font-size:12px;
+  line-height:1.5;
+}
+.lou-box{
+  border:1px solid #b7c2ce;
+  border-radius:8px;
+  padding:15px;
+  background:#fbfcfe;
+  margin-top:12px;
+  max-height:280px;
+  overflow:auto;
+  font-size:13px;
+  line-height:1.55;
+}
+.approval-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1.2fr;
+  gap:12px;
+}
+.approval-card{
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:12px;
+  background:#fafbfd;
+}
+.approval-card h4{margin:0 0 10px;color:var(--navy)}
+.actions{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:22px;
+  flex-wrap:wrap;
+}
+button{
+  border:none;
+  border-radius:7px;
+  padding:10px 16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.btn-main{background:var(--navy);color:white}
+.btn-soft{background:#e6edf4;color:var(--navy)}
+.btn-green{background:var(--ok);color:white}
+.hidden{display:none!important}
+.summary-block{
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:14px;
+  margin-bottom:12px;
+}
+.summary-block h4{margin:0 0 7px;color:var(--navy)}
+.success{
+  text-align:center;
+  padding:38px 15px;
+}
+.success .tick{
+  width:72px;height:72px;
+  display:grid;place-items:center;
+  margin:0 auto 15px;
+  border-radius:50%;
+  background:#ddf5e7;
+  color:var(--ok);
+  font-size:38px;
+}
+.status{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+  background:#fff1c2;
+  color:#755300;
+}
+.toast{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  background:#111827;
+  color:white;
+  padding:11px 15px;
+  border-radius:7px;
+  display:none;
+  z-index:20;
+}
+.helper{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:4px;
+}
+
+.high-risk-box{margin-top:18px;border:2px solid #111;background:#fff;padding:0 14px 16px}
+.section-title.high-risk{background:#fff200;font-size:16px}
+.high-risk-intro{padding:12px;margin:0 -14px 14px;background:#fffbd0;border-bottom:1px solid #777;font-size:13px;line-height:1.5}
+.subheading{margin:18px 0 10px;padding:8px 10px;background:#f1f3f5;border-left:4px solid var(--primary);font-weight:bold;color:var(--primary)}
+.check-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.high-alert{margin-top:14px;padding:12px;border:1px solid #efc16a;background:#fff8e8;border-radius:8px;color:#744b00;font-size:13px}
+.route{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:12px 0}
+.route span{padding:7px 9px;background:#e9f0f6;border-radius:6px;font-size:12px;font-weight:bold}
+.route b{color:var(--secondary)}
+.approval-grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.required-tag{display:inline-block;background:#fee4e2;color:#b42318;padding:3px 6px;border-radius:4px;font-size:11px;font-weight:bold}
+.summary-section.high-risk-summary{border:2px solid #c89d00;background:#fffde3;padding:13px;border-radius:8px}
+
+@media(max-width:800px){
+  .form-grid,.work-types,.approval-grid,.approval-grid-4,.signature-grid,.schedule,.check-grid,.grid-2,.grid-3{grid-template-columns:1fr}
+  .cell.span2,.cell.span3{grid-column:span 1}
+  .header{align-items:flex-start}
+  .badge{display:none}
+  .paper{padding:14px}
+  .yes-no{grid-template-columns:1fr auto auto}
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="brand">
+    <div class="logo-box">STF<br>RESOURCES</div>
+    <div>
+      <h1>AICB Permit to Work</h1>
+      <p>QR PTW with integrated High-Risk Permit controls</p>
+    </div>
+  </div>
+  <div class="badge">One Application • One PTW Number</div>
+</header>
+
+<div class="shell">
+  <div class="notice">
+    <strong>For existing users:</strong> The section names, field sequence and wording remain similar to the current paper PTW. The QR code only opens this digital form.
+  </div>
+
+  <div class="progress" id="progressBox">
+    <div class="progress-row">
+      <span id="stepText">Step 1 of 5</span>
+      <strong id="stepName">Part I: Particular of Applicant</strong>
+    </div>
+    <div class="bar"><span id="barFill"></span></div>
+  </div>
+
+  <div class="paper">
+    <div class="doc-title">
+      <h2>PERMIT TO WORK (PTW)</h2>
+      <div class="ref">NC PTW NO: <input id="ptwNo" value="Generated after submission" readonly></div>
+    </div>
+
+    <form id="ptwForm" onsubmit="return false;">
+      <section class="step" data-step="1">
+        <div class="section-title">Part I: Particular of Applicant</div>
+        <div class="form-grid">
+          <div class="cell">
+            <label>Name of Firm / Company *</label>
+            <input id="companyName" value="ABC Maintenance Sdn. Bhd." required>
+          </div>
+          <div class="cell">
+            <label>Name of Applicant / Designation *</label>
+            <input id="applicantName" value="Ahmad Bin Ali / Site Supervisor" required>
+          </div>
+          <div class="cell">
+            <label>NRIC No.</label>
+            <input id="nric" placeholder="Optional / controlled access">
+          </div>
+          <div class="cell span2">
+            <label>Company Address</label>
+            <textarea id="companyAddress">No. 12, Jalan Contoh, Kuala Lumpur</textarea>
+          </div>
+          <div class="cell">
+            <label>Department</label>
+            <input id="department" value="Building Management & Housekeeping">
+          </div>
+          <div class="cell">
+            <label>Telephone No. (Office)</label>
+            <input id="officePhone" value="03-1234 5678">
+          </div>
+          <div class="cell">
+            <label>Mobile Phone No. *</label>
+            <input id="mobilePhone" value="012-345 6789" required>
+          </div>
+          <div class="cell">
+            <label>E-mail Address</label>
+            <input id="email" type="email" value="ahmad@demo.com">
+          </div>
+          <div class="cell span2">
+            <label>Request by: Company / PIC's Name & Contact Number *</label>
+            <input id="requestBy" value="Mohamed Shafiq / 012-000 0000" required>
+          </div>
+          <div class="cell">
+            <label>Tenant Confirmation</label>
+            <select id="tenantConfirmation">
+              <option>Confirmed by Tenant Representative</option>
+              <option>Not Applicable</option>
+              <option>Pending Confirmation</option>
+            </select>
+            <div class="helper">Digital acknowledgement replaces manual signature/company chop.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="step hidden" data-step="2">
+        <div class="section-title">Part II: Nature of Application</div>
+        <div style="padding:14px;border:1px solid #555;border-top:none;">
+          <label>Type of Works – Please Tick</label>
+          <div class="work-types">
+            <label class="choice"><input type="checkbox" name="workType" value="Electrical"> Electrical</label>
+            <label class="choice"><input type="checkbox" name="workType" value="Fire Protection"> Fire Protection</label>
+            <label class="choice"><input type="checkbox" name="workType" value="Air-Conditioning" checked> Air-Conditioning</label>
+            <label class="choice"><input type="checkbox" name="workType" value="Plumbing"> Plumbing</label>
+            <label class="choice"><input type="checkbox" name="workType" value="Civil Work"> Civil Work</label>
+            <label class="choice"><input type="checkbox" name="workType" value="Others"> Others</label>
+          </div>
+
+          <div style="margin-top:18px;">
+            <div class="yes-no">
+              <label>Are you doing any cutting work?</label>
+              <label class="choice"><input type="radio" name="cutting" value="Yes" onchange="toggleHighRisk()"> Yes</label>
+              <label class="choice"><input type="radio" name="cutting" value="No" checked onchange="toggleHighRisk()"> No</label>
+            </div>
+            <div class="yes-no">
+              <label>Are you doing any grinding work?</label>
+              <label class="choice"><input type="radio" name="grinding" value="Yes" onchange="toggleHighRisk()"> Yes</label>
+              <label class="choice"><input type="radio" name="grinding" value="No" checked onchange="toggleHighRisk()"> No</label>
+            </div>
+            <div class="yes-no">
+              <label>Are you doing any hot work?</label>
+              <label class="choice"><input type="radio" name="hotwork" value="Yes" onchange="toggleHighRisk()"> Yes</label>
+              <label class="choice"><input type="radio" name="hotwork" value="No" checked onchange="toggleHighRisk()"> No</label>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <label>Detail Work Description (with Method Statement) *</label>
+            <textarea id="workDescription" required>Servicing of air-conditioning unit at Level 6. Work area will be barricaded. No hot work involved.</textarea>
+          </div>
+
+          <div class="schedule">
+            <div>
+              <label>Working Period</label>
+              <div class="schedule">
+                <input id="startDate" type="date" required>
+                <input id="endDate" type="date" required>
+              </div>
+            </div>
+            <div>
+              <label>Working Hours</label>
+              <div class="schedule">
+                <input id="startTime" type="time" value="09:00" required>
+                <input id="endTime" type="time" value="17:00" required>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <label>Include Saturday & Sunday</label>
+            <select id="weekend">
+              <option>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+
+
+          <div id="highRiskSection" class="high-risk-box hidden">
+            <div class="section-title high-risk">HIGH-RISK PERMIT-TO-WORK – AUTOMATIC ADDENDUM</div>
+            <div class="high-risk-intro">
+              This section forms part of the same QR application. It appears automatically when cutting,
+              grinding or hot work is selected. The PTW cannot be approved until the required high-risk
+              information, controls and supporting documents are completed.
+            </div>
+
+            <div class="subheading">A. High-Risk Work Information</div>
+            <div class="grid-2">
+              <div>
+                <label>High-Risk Activity *</label>
+                <select id="highRiskActivity">
+                  <option>Flame Cutting / Welding / Grinding</option>
+                  <option>Hot Work</option>
+                  <option>Cutting Work</option>
+                  <option>Grinding Work</option>
+                </select>
+              </div>
+              <div>
+                <label>Exact Location of Work *</label>
+                <input id="highRiskLocation" placeholder="Example: Level 6 AHU Room">
+              </div>
+              <div>
+                <label>Hot-Work / High-Risk Details *</label>
+                <textarea id="highRiskDetails" placeholder="Describe the heat, sparks, flame, materials and nearby risks."></textarea>
+              </div>
+              <div>
+                <label>Work Order / Project No.</label>
+                <input id="workOrderNo" placeholder="If applicable">
+              </div>
+            </div>
+
+            <div class="subheading">B. Mandatory Supporting Documents</div>
+            <div class="grid-2">
+              <div>
+                <label>Method Statement <span class="required-tag">Required</span></label>
+                <input id="mosFile" type="file">
+              </div>
+              <div>
+                <label>HIRARC / Risk Assessment <span class="required-tag">Required</span></label>
+                <input id="hirarcFile" type="file">
+              </div>
+              <div>
+                <label>Hot-Work / Additional Certificate</label>
+                <input id="hotWorkCertificate" type="file">
+              </div>
+              <div>
+                <label>Worker Competency Certificates</label>
+                <input id="competencyFile" type="file" multiple>
+              </div>
+            </div>
+
+            <div class="subheading">C. Operational Precautions</div>
+            <div class="check-grid">
+              <label class="choice"><input type="checkbox" name="precaution" value="HSE induction completed"> HSE induction completed</label>
+              <label class="choice"><input type="checkbox" name="precaution" value="Area cordoned or roped off"> Area cordoned / roped off</label>
+              <label class="choice"><input type="checkbox" name="precaution" value="Warning signs posted"> Warning signs posted</label>
+              <label class="choice"><input type="checkbox" name="precaution" value="Temporary lights provided"> Temporary lights provided</label>
+              <label class="choice"><input type="checkbox" name="precaution" value="Safety or fire attendant required"> Safety / fire attendant required</label>
+              <label class="choice"><input type="checkbox" name="precaution" value="Fire extinguisher standby"> Fire extinguisher standby</label>
+              <label class="choice"><input type="checkbox" name="precaution" value="Safe access provided"> Safe access to and from work area</label>
+              <label class="choice"><input type="checkbox" name="precaution" value="Toolbox talk completed"> Toolbox talk before commencement</label>
+            </div>
+
+            <div class="subheading">D. Fire Watch and Fire Protection</div>
+            <div class="grid-3">
+              <div>
+                <label>Fire Watchman Name *</label>
+                <input id="fireWatchName" placeholder="Appointed fire watchman">
+              </div>
+              <div>
+                <label>Fire Watchman Contact *</label>
+                <input id="fireWatchContact" placeholder="Mobile number">
+              </div>
+              <div>
+                <label>Fire Extinguisher Confirmation *</label>
+                <select id="extinguisherConfirmed">
+                  <option value="">Please select</option>
+                  <option>Confirmed and inspected</option>
+                  <option>To be provided before work</option>
+                </select>
+              </div>
+              <div>
+                <label>No. of Fire Extinguishers</label>
+                <input id="extinguisherCount" type="number" min="1" value="1">
+              </div>
+              <div>
+                <label>Fire Alarm Isolation Required? *</label>
+                <select id="fireAlarmIsolation">
+                  <option value="">Please select</option>
+                  <option>No</option>
+                  <option>Yes – Engineering approval required</option>
+                </select>
+              </div>
+              <div>
+                <label>Fire Sprinkler Isolation Required?</label>
+                <select id="sprinklerIsolation">
+                  <option>No</option>
+                  <option>Yes – Engineering approval required</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="subheading">E. Personal Protective Equipment</div>
+            <div class="check-grid">
+              <label class="choice"><input type="checkbox" name="ppe" value="Safety helmet"> Safety helmet</label>
+              <label class="choice"><input type="checkbox" name="ppe" value="Safety shoes or boots"> Safety shoes / boots</label>
+              <label class="choice"><input type="checkbox" name="ppe" value="Safety glasses or goggles"> Safety glasses / goggles</label>
+              <label class="choice"><input type="checkbox" name="ppe" value="Full face visor"> Full face visor</label>
+              <label class="choice"><input type="checkbox" name="ppe" value="Protective gloves"> Protective gloves</label>
+              <label class="choice"><input type="checkbox" name="ppe" value="Apron or heat protection"> Apron / heat protection</label>
+              <label class="choice"><input type="checkbox" name="ppe" value="Hearing protection"> Hearing protection</label>
+              <label class="choice"><input type="checkbox" name="ppe" value="Dust mask or respirator"> Dust mask / respirator</label>
+            </div>
+
+            <div class="subheading">F. Tools, Equipment and Machinery</div>
+            <div class="grid-3">
+              <div><label>Hand Tools</label><textarea id="handTools" placeholder="List hand tools"></textarea></div>
+              <div><label>Electrical Powered Tools</label><textarea id="poweredTools" placeholder="List tools using building sockets"></textarea></div>
+              <div><label>Machinery</label><textarea id="machinery" placeholder="Skylift, crane, gondola or others"></textarea></div>
+            </div>
+            <div class="high-alert">
+              Any electrical tool connected to a building socket must be checked by the Engineering Team before use.
+            </div>
+
+            <div class="subheading">G. Automatic Approval Routing</div>
+            <div class="route">
+              <span>Contractor</span><b>→</b><span>Tenant / Project Manager</span><b>→</b>
+              <span>BMH</span><b>→</b><span>Engineering</span><b>→</b>
+              <span>Security</span><b>→</b><span>Approved High-Risk PTW</span>
+            </div>
+            <div class="approval-grid-4">
+              <div class="approval-card"><h4>Project Manager</h4>Reviews MOS, HIRARC, schedule, tools and certificates.</div>
+              <div class="approval-card"><h4>Engineering</h4>Checks powered tools, electricity points and isolation requests.</div>
+              <div class="approval-card"><h4>BMH</h4>Confirms briefing, escape route and housekeeping controls.</div>
+              <div class="approval-card"><h4>Security</h4>Checks workers, tools and equipment and performs patrols.</div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <label>Attach Plans / Method Statement</label>
+            <input type="file" multiple>
+          </div>
+        </div>
+      </section>
+
+      <section class="step hidden" data-step="3">
+        <div class="section-title">Part III: Particular of Contractor(s)</div>
+        <div class="form-grid">
+          <div class="cell">
+            <label>Name of Firm / Company *</label>
+            <input id="contractorCompany" value="ABC Maintenance Sdn. Bhd." required>
+          </div>
+          <div class="cell">
+            <label>Name of Site Supervisor *</label>
+            <input id="siteSupervisor" value="Ahmad Bin Ali" required>
+          </div>
+          <div class="cell">
+            <label>No. of Workers *</label>
+            <input id="workerCount" type="number" min="1" value="3" required>
+          </div>
+          <div class="cell">
+            <label>Telephone No. (Office)</label>
+            <input id="contractorOffice" value="03-1234 5678">
+          </div>
+          <div class="cell">
+            <label>Mobile Phone No. *</label>
+            <input id="supervisorMobile" value="012-345 6789" required>
+          </div>
+          <div class="cell">
+            <label>Facsimile No. (if any)</label>
+            <input id="fax">
+          </div>
+        </div>
+
+        <table class="worker-table" style="margin-top:12px;">
+          <thead>
+            <tr>
+              <th>Pass No.</th>
+              <th>Name of Contractor</th>
+              <th>Level</th>
+              <th>Telephone No.</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input value="P001"></td>
+              <td><input value="Ahmad Bin Ali"></td>
+              <td><input value="Level 6"></td>
+              <td><input value="012-345 6789"></td>
+              <td><input value="Supervisor"></td>
+            </tr>
+            <tr>
+              <td><input value="P002"></td>
+              <td><input value="Kumar A/L Ravi"></td>
+              <td><input value="Level 6"></td>
+              <td><input value="013-111 2222"></td>
+              <td><input></td>
+            </tr>
+            <tr>
+              <td><input value="P003"></td>
+              <td><input value="Lim Wei Jian"></td>
+              <td><input value="Level 6"></td>
+              <td><input value="014-333 4444"></td>
+              <td><input></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">Signature of Applicant</div>
+        <div style="border:1px solid #555;border-top:none;padding:14px;">
+          <div class="signature-grid">
+            <div>
+              <label>Applicant Name / Digital Signature *</label>
+              <input id="digitalSignature" value="Ahmad Bin Ali" required>
+            </div>
+            <div>
+              <label>Company Stamp</label>
+              <input type="file">
+            </div>
+            <div>
+              <label>Date</label>
+              <input id="signatureDate" type="date" required>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Important:</strong><br>
+            • Foreman is responsible for workers' behaviour and safety of worker passes.<br>
+            • Submit the PTW at least three working days before commencement.<br>
+            • Applicant must understand and comply with the Renovation/Work Manual.<br>
+            • Contractor declares compliance with applicable occupational safety and health requirements.
+          </div>
+        </div>
+      </section>
+
+      <section class="step hidden" data-step="4">
+        <div class="section-title">Letter of Undertaking by Contractor</div>
+        <div class="lou-box">
+          <p>I/We confirm that I/We have read, understood and agree to comply with the building's Terms and Conditions.</p>
+          <ul>
+            <li>All contractors shall wear and display the Bangunan AICB Security Pass and OSH Induction Card.</li>
+            <li>The approved PTW shall be available for inspection by Bangunan AICB Security.</li>
+            <li>Electrical power tapping shall use an approved portable distribution board with ELCB protection.</li>
+            <li>Passenger lifts and escalators shall not be used for materials unless prior approval is obtained.</li>
+            <li>Dust, debris and waste shall be cleaned and removed promptly.</li>
+            <li>Materials and tools shall remain within the approved work area and not obstruct common areas.</li>
+            <li>Floors, walls, equipment and building systems shall be protected from damage.</li>
+            <li>No fire protection or detection system may be isolated or altered without approval.</li>
+            <li>Workers' name list and required supporting documents shall be submitted with the PTW.</li>
+            <li>FMO and Security may inspect the work and stop unsafe or non-compliant activities.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:14px;">
+          <label class="choice">
+            <input id="agreeLou" type="checkbox">
+            I have read and agree to the Letter of Undertaking and PTW conditions.
+          </label>
+        </div>
+
+        <div class="signature-grid" style="margin-top:14px;">
+          <div>
+            <label>Name</label>
+            <input id="louName" value="Ahmad Bin Ali">
+          </div>
+          <div>
+            <label>Designation</label>
+            <input id="louDesignation" value="Site Supervisor">
+          </div>
+          <div>
+            <label>Date</label>
+            <input id="louDate" type="date">
+          </div>
+        </div>
+      </section>
+
+      <section class="step hidden" data-step="5">
+        <div class="section-title">Review Before Submission</div>
+        <div id="review" style="padding-top:14px;"></div>
+
+        <div class="section-title">Internal Use Only</div>
+        <div class="approval-grid" style="margin-top:12px;">
+          <div class="approval-card">
+            <h4>Approved by BMH</h4>
+            <p>Automatically routed to the assigned BMH approver after submission.</p>
+            <span class="status">Pending</span>
+          </div>
+          <div class="approval-card">
+            <h4>Acknowledged by</h4>
+            <p>Relevant department receives the application after BMH review.</p>
+            <span class="status">Pending</span>
+          </div>
+          <div class="approval-card">
+            <h4>Department Routing</h4>
+            <label class="choice"><input type="checkbox" checked disabled> Engineering Department</label>
+            <label class="choice"><input type="checkbox" disabled> Security Department</label>
+            <label class="choice"><input type="checkbox" disabled> IT/AV Department</label>
+            <label class="choice"><input type="checkbox" disabled> HR Department</label>
+            <label class="choice"><input type="checkbox" disabled> Kitchen Department</label>
+          </div>
+        </div>
+      </section>
+
+      <section id="successSection" class="hidden">
+        <div class="success">
+          <div class="tick">✓</div>
+          <h2>PTW Submitted Successfully</h2>
+          <p>The form has been routed to BMH for review.</p>
+          <h3 id="generatedRef" style="color:var(--navy);">AICB-PTW-2026-00001</h3>
+          <span class="status">Pending BMH Approval</span>
+        </div>
+      </section>
+
+      <div class="actions" id="actions">
+        <div>
+          <button type="button" class="btn-soft" onclick="saveDraft()">Save Draft</button>
+        </div>
+        <div>
+          <button type="button" class="btn-soft" id="prevBtn" onclick="move(-1)">Previous</button>
+          <button type="button" class="btn-main" id="nextBtn" onclick="move(1)">Next</button>
+          <button type="button" class="btn-green hidden" id="submitBtn" onclick="submitPTW()">Submit PTW</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+let currentStep=1;
+let highRiskActive=false;
+const names=[
+  "Part I: Particular of Applicant",
+  "Part II: Nature of Application",
+  "Part III: Particular of Contractor(s)",
+  "Letter of Undertaking",
+  "Review and Internal Routing"
+];
+
+function setDates(){
+  const d=new Date();
+  const s=d.toISOString().slice(0,10);
+  ["startDate","endDate","signatureDate","louDate"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value=s;
+  });
+}
+setDates();
+
+
+function toggleHighRisk(){
+  highRiskActive=["cutting","grinding","hotwork"].some(n=>radio(n)==="Yes");
+  document.getElementById("highRiskSection").classList.toggle("hidden",!highRiskActive);
+  if(radio("hotwork")==="Yes") highRiskActivity.value="Hot Work";
+  else if(radio("grinding")==="Yes") highRiskActivity.value="Flame Cutting / Welding / Grinding";
+  else if(radio("cutting")==="Yes") highRiskActivity.value="Cutting Work";
+}
+
+function update(){
+  document.querySelectorAll(".step").forEach(s=>{
+    s.classList.toggle("hidden",Number(s.dataset.step)!==currentStep);
+  });
+  document.getElementById("stepText").textContent=`Step ${currentStep} of 5`;
+  document.getElementById("stepName").textContent=names[currentStep-1];
+  document.getElementById("barFill").style.width=`${currentStep*20}%`;
+  document.getElementById("prevBtn").style.visibility=currentStep===1?"hidden":"visible";
+  document.getElementById("nextBtn").classList.toggle("hidden",currentStep===5);
+  document.getElementById("submitBtn").classList.toggle("hidden",currentStep!==5);
+  if(currentStep===5) buildReview();
+}
+
+function validateStep(){
+  const visible=document.querySelector(`.step[data-step="${currentStep}"]`);
+  for(const el of visible.querySelectorAll("[required]")){
+    if(!el.value.trim()){
+      el.focus();
+      showToast("Please complete all mandatory fields.");
+      return false;
+    }
+  }
+  if(currentStep===2 && highRiskActive){
+    const ids=["highRiskLocation","highRiskDetails","fireWatchName","fireWatchContact","extinguisherConfirmed","fireAlarmIsolation"];
+    for(const id of ids){
+      const el=document.getElementById(id);
+      if(!el.value.trim()){
+        el.focus();
+        showToast("Please complete all mandatory High-Risk PTW fields.");
+        return false;
+      }
+    }
+    if(document.querySelectorAll('input[name="precaution"]:checked').length<3){
+      showToast("Select at least three operational precautions.");
+      return false;
+    }
+    if(document.querySelectorAll('input[name="ppe"]:checked').length<2){
+      showToast("Select the required PPE.");
+      return false;
+    }
+  }
+  if(currentStep===4 && !document.getElementById("agreeLou").checked){
+    showToast("Please agree to the Letter of Undertaking.");
+    return false;
+  }
+  return true;
+}
+
+function move(dir){
+  if(dir>0 && !validateStep()) return;
+  currentStep=Math.max(1,Math.min(5,currentStep+dir));
+  update();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function checked(name){
+  return [...document.querySelectorAll(`input[name="${name}"]:checked`)]
+    .map(x=>x.value).join(", ") || "None";
+}
+
+function radio(name){
+  const x=document.querySelector(`input[name="${name}"]:checked`);
+  return x?x.value:"Not selected";
+}
+
+function esc(v){
+  return String(v??"").replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+function buildReview(){
+  const review=document.getElementById("review");
+  review.innerHTML=`
+    <div class="summary-block">
+      <h4>Part I: Particular of Applicant</h4>
+      <strong>${esc(companyName.value)}</strong><br>
+      ${esc(applicantName.value)}<br>
+      ${esc(mobilePhone.value)} • ${esc(email.value)}
+    </div>
+    <div class="summary-block">
+      <h4>Part II: Nature of Application</h4>
+      <strong>Type of Work:</strong> ${esc(checked("workType"))}<br>
+      <strong>Cutting:</strong> ${esc(radio("cutting"))} &nbsp; 
+      <strong>Grinding:</strong> ${esc(radio("grinding"))} &nbsp;
+      <strong>Hot Work:</strong> ${esc(radio("hotwork"))}<br><br>
+      ${esc(workDescription.value)}<br><br>
+      <strong>Period:</strong> ${esc(startDate.value)} to ${esc(endDate.value)}<br>
+      <strong>Hours:</strong> ${esc(startTime.value)} to ${esc(endTime.value)}
+    </div>
+    ${highRiskActive ? `
+    <div class="summary-section high-risk-summary">
+      <h4>High-Risk PTW Addendum</h4>
+      <strong>Activity:</strong> ${esc(highRiskActivity.value)}<br>
+      <strong>Location:</strong> ${esc(highRiskLocation.value)}<br>
+      <strong>Details:</strong> ${esc(highRiskDetails.value)}<br>
+      <strong>Fire Watch:</strong> ${esc(fireWatchName.value)} • ${esc(fireWatchContact.value)}<br>
+      <strong>Fire Extinguisher:</strong> ${esc(extinguisherConfirmed.value)}<br>
+      <strong>Fire Alarm Isolation:</strong> ${esc(fireAlarmIsolation.value)}<br>
+      <strong>Precautions:</strong> ${esc(checked("precaution"))}<br>
+      <strong>PPE:</strong> ${esc(checked("ppe"))}<br>
+      <strong>Approval Route:</strong> Project Manager → BMH → Engineering → Security
+    </div>` : ""}
+    <div class="summary-block">
+      <h4>Part III: Particular of Contractor(s)</h4>
+      ${esc(contractorCompany.value)}<br>
+      Supervisor: ${esc(siteSupervisor.value)} • ${esc(supervisorMobile.value)}<br>
+      Workers: ${esc(workerCount.value)}
+    </div>
+    <div class="summary-block">
+      <h4>Letter of Undertaking</h4>
+      Accepted by ${esc(louName.value)}, ${esc(louDesignation.value)} on ${esc(louDate.value)}.
+    </div>`;
+}
+
+function saveDraft(){
+  const data={currentStep};
+  document.querySelectorAll("#ptwForm input,#ptwForm select,#ptwForm textarea").forEach(el=>{
+    if(!el.id || el.type==="file") return;
+    data[el.id]=el.type==="checkbox"?el.checked:el.value;
+  });
+  localStorage.setItem("aicbPtwDraft",JSON.stringify(data));
+  showToast("Draft saved in this browser.");
+}
+
+function submitPTW(){
+  if(!validateStep()) return;
+  const yr=new Date().getFullYear();
+  const no=String(Math.floor(Math.random()*9000)+1000).padStart(5,"0");
+  const ref=`AICB-PTW-${yr}-${no}`;
+  document.getElementById("generatedRef").textContent=ref;
+  document.getElementById("ptwNo").value=ref;
+  const successParagraph=document.querySelector("#successSection p");
+  const successStatus=document.querySelector("#successSection .status");
+  if(highRiskActive){
+    successParagraph.textContent="The normal PTW and High-Risk PTW addendum have been routed to the Project Manager, BMH, Engineering and Security.";
+    successStatus.textContent="Pending High-Risk PTW Review";
+  }
+  document.querySelectorAll(".step").forEach(s=>s.classList.add("hidden"));
+  document.getElementById("successSection").classList.remove("hidden");
+  document.getElementById("actions").classList.add("hidden");
+  document.getElementById("progressBox").classList.add("hidden");
+  localStorage.removeItem("aicbPtwDraft");
+}
+
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;
+  t.style.display="block";
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>t.style.display="none",2400);
+}
+
+toggleHighRisk();
+update();
